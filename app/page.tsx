@@ -1,103 +1,190 @@
-import Image from "next/image";
+import Link from "next/link";
 
+/**
+ * Home Page - Parallel Routes PoC
+ * 
+ * This page serves as the navigation hub for all parallel routes examples.
+ */
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const examples = [
+    {
+      title: "Dashboard with Parallel Slots",
+      description: "Two parallel slots (@team and @analytics) rendering simultaneously with tab navigation",
+      href: "/dashboard",
+      features: [
+        "Basic parallel routes with @team and @analytics slots",
+        "Tab groups within @analytics slot",
+        "Independent navigation per slot",
+        "Default.tsx fallbacks for unmatched routes",
+      ],
+      color: "from-blue-500 to-cyan-500",
+      icon: "📊",
+    },
+    {
+      title: "Admin Area - Conditional Rendering",
+      description: "Role-based dashboard that conditionally renders @user or @admin slot",
+      href: "/admin",
+      features: [
+        "Conditional slot rendering based on user role",
+        "Different dashboards for user vs admin",
+        "Simulated role switching on refresh",
+        "Real-world use case example",
+      ],
+      color: "from-purple-500 to-pink-500",
+      icon: "🔐",
+    },
+    {
+      title: "Photo Gallery - Modal with Intercepting Routes",
+      description: "Photo gallery with modal overlay using intercepting routes for seamless UX",
+      href: "/gallery",
+      features: [
+        "Modal pattern with @modal slot",
+        "Intercepting routes with (.) convention",
+        "Shareable URLs that work in both contexts",
+        "Browser back/forward navigation support",
+      ],
+      color: "from-green-500 to-emerald-500",
+      icon: "📷",
+    },
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+      
+      <div className="relative">
+        <div className="max-w-7xl mx-auto px-8 py-16">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+              Next.js Parallel Routes
+            </h1>
+            <p className="text-xl text-purple-200 mb-2">
+              Proof of Concept Implementation
+            </p>
+            <p className="text-purple-300 max-w-2xl mx-auto">
+              Explore comprehensive examples demonstrating parallel routes, intercepting routes,
+              conditional rendering, and tab groups in Next.js App Router.
+            </p>
+          </div>
+
+          {/* Examples Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {examples.map((example, index) => (
+              <Link
+                key={index}
+                href={example.href}
+                className="group relative bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/20 hover:scale-[1.02] transition-all duration-300"
+              >
+                <div className={`absolute inset-0 bg-gradient-to-br ${example.color} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity`} />
+                
+                <div className="relative">
+                  <div className="text-5xl mb-4">{example.icon}</div>
+                  
+                  <h2 className="text-2xl font-bold text-white mb-3">
+                    {example.title}
+                  </h2>
+                  
+                  <p className="text-purple-200 text-sm mb-4">
+                    {example.description}
+                  </p>
+
+                  <div className="space-y-2 mb-4">
+                    {example.features.map((feature, i) => (
+                      <div key={i} className="flex items-start gap-2 text-sm">
+                        <span className="text-green-400 mt-0.5">✓</span>
+                        <span className="text-purple-100">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-2 text-purple-300 group-hover:text-white transition-colors font-medium">
+                    <span>Explore Example</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Key Concepts */}
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+            <h2 className="text-2xl font-bold text-white mb-6">
+              📚 Key Concepts Demonstrated
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-lg font-semibold text-purple-200 mb-3">
+                  Parallel Routes
+                </h3>
+                <ul className="space-y-2 text-sm text-purple-100">
+                  <li>• Named slots with @folder convention</li>
+                  <li>• Simultaneous rendering of multiple pages</li>
+                  <li>• Independent navigation and state</li>
+                  <li>• Default.tsx fallbacks for unmatched routes</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-purple-200 mb-3">
+                  Intercepting Routes
+                </h3>
+                <ul className="space-y-2 text-sm text-purple-100">
+                  <li>• (.) convention for same-level interception</li>
+                  <li>• Modal patterns with shareable URLs</li>
+                  <li>• Soft vs hard navigation handling</li>
+                  <li>• Catch-all routes for cleanup</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-purple-200 mb-3">
+                  Tab Groups
+                </h3>
+                <ul className="space-y-2 text-sm text-purple-100">
+                  <li>• Layouts within parallel slots</li>
+                  <li>• Independent sub-navigation</li>
+                  <li>• State preservation across tabs</li>
+                  <li>• Client-side tab switching</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-purple-200 mb-3">
+                  Conditional Rendering
+                </h3>
+                <ul className="space-y-2 text-sm text-purple-100">
+                  <li>• Role-based UI rendering</li>
+                  <li>• Multiple slots for different contexts</li>
+                  <li>• Dynamic layout composition</li>
+                  <li>• Flexible user experiences</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="text-center mt-12 text-purple-300 text-sm">
+            <p>
+              Built with Next.js 14+ App Router • TypeScript • Tailwind CSS • Shadcn/ui
+            </p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
