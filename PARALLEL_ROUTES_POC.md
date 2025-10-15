@@ -28,19 +28,15 @@ app/
 │   │   └── page.tsx                            # Standard user dashboard
 │   └── @admin/
 │       └── page.tsx                            # Administrator dashboard
-├── gallery/                                     # Example 3: Modal with Intercepting Routes
-│   ├── layout.tsx                              # Accepts @modal slot
-│   ├── page.tsx                                # Photo gallery grid
-│   └── @modal/
-│       ├── default.tsx                         # Returns null when modal not active
-│       ├── (...)photo/
-│       │   └── [id]/
-│       │       └── page.tsx                    # Intercepted route (modal)
-│       └── [...catchAll]/
-│           └── page.tsx                        # Catch-all for cleanup
-├── photo/                                       # Photo routes (standalone)
+├── gallery/                                     # Example 3: Gallery Page
+│   ├── layout.tsx                              # Simple layout
+│   └── page.tsx                                # Photo gallery grid
+├── photo/                                       # Photo routes (always modal)
 │   └── [id]/
-│       └── page.tsx                            # Direct route (full page)
+│       ├── layout.tsx                          # Layout with @gallery slot
+│       ├── page.tsx                            # Photo modal (client component)
+│       └── @gallery/
+│           └── page.tsx                        # Gallery background
 └── components/
     └── modal.tsx                               # Reusable modal component
 ```
@@ -81,25 +77,25 @@ app/
 
 ### 3. Photo Gallery - Modal with Intercepting Routes
 
-**Location:** `/gallery`
+**Location:** `/gallery` and `/photo/[id]`
 
 **Features:**
-- Modal pattern using `@modal` parallel slot
-- Intercepting routes with `(...)` convention (intercepts from root level)
-- Photos have their own standalone URLs at `/photo/[id]`, not nested under `/gallery`
-- Shareable URLs that work in both modal and full page contexts
-- Browser back/forward navigation support
+- Photos have standalone URLs at `/photo/[id]`
+- **Always opens as modal** over gallery (even with direct URL access)
+- Uses parallel routes (@gallery slot) to show gallery underneath
+- Closing modal navigates to `/gallery`
 - Multiple modal close methods (ESC, backdrop click, close button)
+- No intercepting routes needed - pattern uses parallel routes at /photo level
 
 **Test Scenarios:**
 1. Visit `/gallery` - See photo grid
-2. Click any photo - Opens in modal with URL `/photo/[id]` (intercepted route)
+2. Click any photo - Opens in modal with URL `/photo/[id]`
 3. Note the URL is `/photo/[id]`, not `/gallery/photo/[id]`
-4. Press ESC or click backdrop - Closes modal and returns to `/gallery`
-5. Browser back button - Closes modal and returns to `/gallery`
-6. Right-click photo → Open in new tab - See full page version at `/photo/[id]`
-7. Refresh while viewing modal - Shows full page version (direct route)
-8. Copy URL while modal is open and paste in new tab - Shows full page
+4. Gallery remains visible underneath the modal
+5. Press ESC or click backdrop - Closes modal and navigates to `/gallery`
+6. Copy `/photo/4` URL and paste in new tab - Opens as modal over gallery
+7. Direct URL access always shows modal over gallery
+8. Closing modal always navigates to `/gallery`
 
 ## 🔑 Key Concepts
 
@@ -117,17 +113,14 @@ app/
 - **Prevents:** 404 errors for unmatched slots
 - **Returns:** Can return `null` for slots that should be hidden
 
-### Intercepting Routes
+### Parallel Routes for Persistent Modals
 
-- **Conventions:**
-  - `(.)` - Intercepts at same segment level
-  - `(..)` - Intercepts one level up
-  - `(...)` - Intercepts from root (app directory)
-- **Use Case:** Show modals while preserving URL for sharing
-- **Behavior:** 
-  - Soft navigation (Link) → Intercepted route (modal)
-  - Hard navigation (refresh/direct URL) → Original route (full page)
-- **Example:** Gallery uses `(...)` to intercept `/photo/[id]` from root level
+- **Pattern:** Use parallel routes to show content underneath modal
+- **Implementation:** Layout at `/photo/[id]` with `@gallery` slot
+- **Benefit:** Modal always appears over gallery, regardless of navigation method
+- **Use Case:** Resource URLs that should always be modal experiences
+- **Closing:** Navigate to the parent route (e.g., `/gallery`)
+- **Example:** `/photo/[id]` uses `@gallery` slot to render gallery underneath
 
 ### Tab Groups
 

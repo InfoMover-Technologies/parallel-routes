@@ -2,24 +2,14 @@ import { ReactNode } from "react";
 
 interface GalleryLayoutProps {
   children: ReactNode;
-  modal: ReactNode;
 }
 
 /**
- * Gallery Layout with Modal Slot
+ * Gallery Layout
  * 
- * This layout demonstrates using parallel routes with intercepting routes
- * to create a modal pattern that supports:
- * - Opening photos in a modal via client-side navigation
- * - Direct URL access to photos (shareable links)
- * - Proper handling of browser back/forward navigation
- * - Context preservation on page refresh
+ * Simple layout for the gallery page. Photos open at /photo/[id]
+ * which always renders as a modal over the gallery using parallel routes.
  */
-export default function GalleryLayout({ children, modal }: GalleryLayoutProps) {
-  return (
-    <>
-      {children}
-      {modal}
-    </>
-  );
+export default function GalleryLayout({ children }: GalleryLayoutProps) {
+  return children;
 }

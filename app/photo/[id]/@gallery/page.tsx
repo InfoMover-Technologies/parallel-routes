@@ -1,12 +1,12 @@
 import Link from "next/link";
 
 /**
- * Gallery Main Page
+ * Gallery Slot within Photo Route
  * 
- * Displays a grid of photos. When clicked via Link, photos open in a modal
- * through the intercepted route. Direct navigation opens the full page.
+ * This renders the gallery page as a background when accessing /photo/[id] directly.
+ * It provides the visual context that the modal appears over.
  */
-export default function GalleryPage() {
+export default function GallerySlot() {
   const photos = [
     { id: "1", title: "Mountain Sunrise", color: "from-orange-400 to-pink-500" },
     { id: "2", title: "Ocean Waves", color: "from-blue-400 to-cyan-500" },
@@ -35,10 +35,10 @@ export default function GalleryPage() {
             </p>
             <ul className="list-disc list-inside ml-4 space-y-1 text-blue-700">
               <li>Click a photo → Opens in modal at /photo/[id] URL</li>
-              <li>Gallery remains visible underneath the modal</li>
-              <li>Press ESC or click backdrop → Closes modal, navigates to /gallery</li>
-              <li>Copy /photo/[id] URL and paste in new tab → Opens as modal over gallery</li>
-              <li>Direct URL access always shows modal over gallery</li>
+              <li>Press ESC or click backdrop → Closes modal, shows gallery at /gallery</li>
+              <li>Browser back button → Closes modal, shows gallery at /gallery</li>
+              <li>Direct URL (/photo/[id]) → Opens modal over gallery</li>
+              <li>All photo URLs work as modals over the gallery</li>
             </ul>
           </div>
         </header>
@@ -75,14 +75,13 @@ export default function GalleryPage() {
             </p>
             <ul className="list-disc list-inside ml-4 space-y-1">
               <li><code className="bg-gray-200 px-2 py-0.5 rounded">photo/[id]/layout.tsx</code> - Layout with @gallery slot</li>
-              <li><code className="bg-gray-200 px-2 py-0.5 rounded">photo/[id]/page.tsx</code> - Photo modal (client component)</li>
+              <li><code className="bg-gray-200 px-2 py-0.5 rounded">photo/[id]/page.tsx</code> - Photo modal</li>
               <li><code className="bg-gray-200 px-2 py-0.5 rounded">photo/[id]/@gallery/page.tsx</code> - Gallery background</li>
             </ul>
             <p className="mt-3">
-              <strong>Parallel Routes for Persistent Modals:</strong> The <code className="bg-gray-200 px-2 py-0.5 rounded">/photo/[id]</code> 
-              route uses a layout with a <code className="bg-gray-200 px-2 py-0.5 rounded">@gallery</code> parallel slot. This ensures 
-              the gallery always renders underneath the photo modal, regardless of how you access the URL. Closing the modal navigates to 
-              <code className="bg-gray-200 px-2 py-0.5 rounded">/gallery</code>.
+              When you visit <code className="bg-gray-200 px-2 py-0.5 rounded">/photo/[id]</code>, 
+              the layout renders both the gallery (via @gallery slot) and the modal (via children).
+              This ensures photos always appear as modals over the gallery, even with direct URL access.
             </p>
           </div>
         </div>
