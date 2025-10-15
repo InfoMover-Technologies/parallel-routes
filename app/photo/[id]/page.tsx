@@ -10,7 +10,7 @@ interface PhotoPageProps {
  * Direct Photo Route (Full Page)
  * 
  * This route is shown when:
- * - Directly accessing /gallery/photo/[id] via URL
+ * - Directly accessing /photo/[id] via URL
  * - Refreshing the page while viewing a photo modal
  * - Opening the link in a new tab
  * 
@@ -136,8 +136,9 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
                     💡 Benefit of This Pattern
                   </h3>
                   <p className="text-xs text-green-700">
-                    This photo has a <strong>shareable URL</strong> that works in both contexts:
-                    modal (via navigation) and full page (via direct access). Best of both worlds!
+                    This photo has a <strong>shareable URL</strong> at its own route (/photo/{id}). 
+                    When accessed from the gallery, it opens as a modal. When accessed directly, 
+                    it shows as a full page. Best of both worlds!
                   </p>
                 </div>
               </div>

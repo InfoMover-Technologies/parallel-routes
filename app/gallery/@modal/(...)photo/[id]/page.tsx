@@ -9,8 +9,8 @@ interface PhotoModalPageProps {
 /**
  * Intercepted Photo Route (Modal)
  * 
- * This route is shown when navigating to /gallery/photo/[id] via client-side navigation.
- * The (.) convention intercepts the route at the same segment level.
+ * This route is shown when navigating to /photo/[id] via client-side navigation from the gallery.
+ * The (...) convention intercepts routes from the app root level.
  * It displays the photo in a modal overlay without navigating away from the gallery.
  */
 export default async function PhotoModalPage({ params }: PhotoModalPageProps) {
@@ -42,7 +42,7 @@ export default async function PhotoModalPage({ params }: PhotoModalPageProps) {
             <p className="text-sm text-green-800">
               <strong>✅ Intercepted Route Active</strong> - This modal was opened using the 
               intercepted route at <code className="bg-green-100 px-2 py-0.5 rounded">
-              @modal/(.)photo/[id]/page.tsx</code>
+              @modal/(...)photo/[id]/page.tsx</code>
             </p>
           </div>
 
@@ -79,8 +79,8 @@ export default async function PhotoModalPage({ params }: PhotoModalPageProps) {
           <div className="text-sm text-gray-600">
             <p>
               <strong>Note:</strong> The URL shows <code className="bg-gray-100 px-2 py-0.5 rounded">
-              /gallery/photo/{id}</code>, making this modal <strong>shareable</strong>. However, accessing 
-              this URL directly (refresh or new tab) will show the full page version instead.
+              /photo/{id}</code> (not /gallery/photo/{id}), making this modal <strong>shareable</strong>. 
+              Accessing this URL directly will show the full page version instead.
             </p>
           </div>
         </div>

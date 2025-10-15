@@ -34,10 +34,10 @@ export default function GalleryPage() {
               <strong>🎯 Try these behaviors:</strong>
             </p>
             <ul className="list-disc list-inside ml-4 space-y-1 text-blue-700">
-              <li>Click a photo → Opens in modal (intercepted route)</li>
-              <li>Press ESC or click backdrop → Closes modal</li>
-              <li>Browser back button → Closes modal</li>
-              <li>Right-click photo → Open in new tab → Full page view</li>
+              <li>Click a photo → Opens in modal at /photo/[id] URL</li>
+              <li>Press ESC or click backdrop → Closes modal, returns to gallery</li>
+              <li>Browser back button → Closes modal, returns to gallery</li>
+              <li>Right-click photo → Open in new tab → Full page view at /photo/[id]</li>
               <li>Refresh on modal → Shows full page (direct route)</li>
             </ul>
           </div>
@@ -47,7 +47,7 @@ export default function GalleryPage() {
           {photos.map((photo) => (
             <Link
               key={photo.id}
-              href={`/gallery/photo/${photo.id}`}
+              href={`/photo/${photo.id}`}
               className="group relative aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${photo.color}`} />
@@ -74,13 +74,14 @@ export default function GalleryPage() {
               <strong>File Structure:</strong>
             </p>
             <ul className="list-disc list-inside ml-4 space-y-1">
-              <li><code className="bg-gray-200 px-2 py-0.5 rounded">@modal/(.)photo/[id]/page.tsx</code> - Intercepted route (modal)</li>
+              <li><code className="bg-gray-200 px-2 py-0.5 rounded">@modal/(...)photo/[id]/page.tsx</code> - Intercepted route (modal)</li>
               <li><code className="bg-gray-200 px-2 py-0.5 rounded">photo/[id]/page.tsx</code> - Direct route (full page)</li>
             </ul>
             <p className="mt-3">
-              <strong>The (.) convention</strong> intercepts routes at the same segment level.
-              When navigating via <code className="bg-gray-200 px-2 py-0.5 rounded">Link</code>, the intercepted route is shown.
-              Direct URL access or page refresh uses the original route.
+              <strong>The (...) convention</strong> intercepts routes from the app root level.
+              When navigating via <code className="bg-gray-200 px-2 py-0.5 rounded">Link</code> from the gallery, 
+              the intercepted route is shown as a modal. Direct URL access or page refresh uses the original route.
+              The photo URL is <code className="bg-gray-200 px-2 py-0.5 rounded">/photo/[id]</code>, not nested under /gallery.
             </p>
           </div>
         </div>

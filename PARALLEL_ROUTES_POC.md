@@ -31,16 +31,16 @@ app/
 ├── gallery/                                     # Example 3: Modal with Intercepting Routes
 │   ├── layout.tsx                              # Accepts @modal slot
 │   ├── page.tsx                                # Photo gallery grid
-│   ├── @modal/
-│   │   ├── default.tsx                         # Returns null when modal not active
-│   │   ├── (.)photo/
-│   │   │   └── [id]/
-│   │   │       └── page.tsx                    # Intercepted route (modal)
-│   │   └── [...catchAll]/
-│   │       └── page.tsx                        # Catch-all for cleanup
-│   └── photo/
-│       └── [id]/
-│           └── page.tsx                        # Direct route (full page)
+│   └── @modal/
+│       ├── default.tsx                         # Returns null when modal not active
+│       ├── (...)photo/
+│       │   └── [id]/
+│       │       └── page.tsx                    # Intercepted route (modal)
+│       └── [...catchAll]/
+│           └── page.tsx                        # Catch-all for cleanup
+├── photo/                                       # Photo routes (standalone)
+│   └── [id]/
+│       └── page.tsx                            # Direct route (full page)
 └── components/
     └── modal.tsx                               # Reusable modal component
 ```
@@ -85,19 +85,21 @@ app/
 
 **Features:**
 - Modal pattern using `@modal` parallel slot
-- Intercepting routes with `(.)` convention
+- Intercepting routes with `(...)` convention (intercepts from root level)
+- Photos have their own standalone URLs at `/photo/[id]`, not nested under `/gallery`
 - Shareable URLs that work in both modal and full page contexts
 - Browser back/forward navigation support
 - Multiple modal close methods (ESC, backdrop click, close button)
 
 **Test Scenarios:**
 1. Visit `/gallery` - See photo grid
-2. Click any photo - Opens in modal (intercepted route)
-3. Press ESC or click backdrop - Closes modal via browser back
-4. Right-click photo → Open in new tab - See full page version
-5. While viewing modal, click browser back - Modal closes, gallery preserved
-6. Refresh while viewing modal - Shows full page version (direct route)
-7. Copy URL while modal is open and paste in new tab - Shows full page
+2. Click any photo - Opens in modal with URL `/photo/[id]` (intercepted route)
+3. Note the URL is `/photo/[id]`, not `/gallery/photo/[id]`
+4. Press ESC or click backdrop - Closes modal and returns to `/gallery`
+5. Browser back button - Closes modal and returns to `/gallery`
+6. Right-click photo → Open in new tab - See full page version at `/photo/[id]`
+7. Refresh while viewing modal - Shows full page version (direct route)
+8. Copy URL while modal is open and paste in new tab - Shows full page
 
 ## 🔑 Key Concepts
 
@@ -115,13 +117,17 @@ app/
 - **Prevents:** 404 errors for unmatched slots
 - **Returns:** Can return `null` for slots that should be hidden
 
-### Intercepting Routes (.)
+### Intercepting Routes
 
-- **Convention:** `(.)` intercepts at same segment level
+- **Conventions:**
+  - `(.)` - Intercepts at same segment level
+  - `(..)` - Intercepts one level up
+  - `(...)` - Intercepts from root (app directory)
 - **Use Case:** Show modals while preserving URL for sharing
 - **Behavior:** 
   - Soft navigation (Link) → Intercepted route (modal)
   - Hard navigation (refresh/direct URL) → Original route (full page)
+- **Example:** Gallery uses `(...)` to intercept `/photo/[id]` from root level
 
 ### Tab Groups
 
