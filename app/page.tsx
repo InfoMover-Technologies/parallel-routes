@@ -8,6 +8,19 @@ import Link from "next/link";
 export default function Home() {
   const examples = [
     {
+      title: "Multi-Level Enterprise Dashboard",
+      description: "Complete role-based dashboard with hierarchical navigation and business intelligence",
+      href: "/app",
+      features: [
+        "Collapsible sidebar with business/domain/project/team hierarchy",
+        "Role-based access control (CEO, PM, Developer, etc.)",
+        "Real-time metrics and KPIs",
+        "Comprehensive mock data for realistic testing",
+      ],
+      color: "from-indigo-500 to-purple-500",
+      icon: "🏢",
+    },
+    {
       title: "Dashboard with Parallel Slots",
       description: "Two parallel slots (@team and @analytics) rendering simultaneously with tab navigation",
       href: "/dashboard",
