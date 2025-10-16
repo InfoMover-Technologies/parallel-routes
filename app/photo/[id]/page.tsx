@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { usePhotos } from "@/app/providers/PhotoProvider";
 
 interface PhotoPageProps {
   params: Promise<{
@@ -14,12 +15,22 @@ interface PhotoPageProps {
  * 
  * This page always renders as a modal over the gallery.
  * When closed, it navigates to /gallery.
+ * 
+ * Features:
+ * - Inline editable title using click-to-edit pattern
+ * - Real-time updates to gallery via Context
  */
 export default function PhotoPage({ params }: PhotoPageProps) {
   const router = useRouter();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [id, setId] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const { photos, updatePhoto } = usePhotos();
+  const photo = photos.find((p) => p.id === id);
 
   useEffect(() => {
     params.then((p) => {
@@ -40,7 +51,11 @@ export default function PhotoPage({ params }: PhotoPageProps) {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
-        router.push("/gallery");
+        if (isEditing) {
+          setIsEditing(false);
+        } else {
+          router.push("/gallery");
+        }
       }
     };
 
@@ -50,7 +65,15 @@ export default function PhotoPage({ params }: PhotoPageProps) {
       clearTimeout(timer);
       dialog.removeEventListener("keydown", handleEscape);
     };
-  }, [router, isOpen]);
+  }, [router, isOpen, isEditing]);
+
+  // Focus input when entering edit mode
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [isEditing]);
 
   const handleClose = () => {
     router.push("/gallery");
@@ -62,8 +85,36 @@ export default function PhotoPage({ params }: PhotoPageProps) {
     }
   };
 
-  const photo = id ? getPhotoData(id) : null;
-  
+  const handleTitleClick = () => {
+    if (photo) {
+      setEditTitle(photo.title);
+      setIsEditing(true);
+    }
+  };
+
+  const handleSaveTitle = () => {
+    if (editTitle.trim() && photo) {
+      updatePhoto(photo.id, editTitle.trim());
+      setIsEditing(false);
+    }
+  };
+
+  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSaveTitle();
+    } else if (e.key === "Escape") {
+      setIsEditing(false);
+    }
+  };
+
+  const handleTitleBlur = () => {
+    if (editTitle.trim() && photo && editTitle !== photo.title) {
+      handleSaveTitle();
+    } else {
+      setIsEditing(false);
+    }
+  };
+
   if (!photo) return <div className="hidden" />;
 
   return (
@@ -99,11 +150,27 @@ export default function PhotoPage({ params }: PhotoPageProps) {
           {/* Modal content */}
           <div className="p-8">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                {photo.title}
-              </h2>
+              {isEditing ? (
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  onBlur={handleTitleBlur}
+                  onKeyDown={handleTitleKeyDown}
+                  className="text-2xl font-bold text-gray-900 mb-2 px-2 py-1 border-2 border-blue-500 rounded-md w-full focus:outline-none"
+                />
+              ) : (
+                <h2
+                  onClick={handleTitleClick}
+                  className="text-2xl font-bold text-gray-900 mb-2 cursor-pointer hover:text-blue-600 hover:bg-blue-50 px-2 py-1 rounded-md transition-colors"
+                  title="Click to edit title"
+                >
+                  {photo.title}
+                </h2>
+              )}
               <p className="text-sm text-gray-500">
-                Photo #{photo.id} • Always Opens as Modal
+                Photo #{photo.id} • Click title to edit
               </p>
             </div>
 
@@ -116,6 +183,13 @@ export default function PhotoPage({ params }: PhotoPageProps) {
             </div>
 
             <div className="space-y-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="text-sm text-blue-800">
+                  <strong>✏️ Inline Editing Active</strong> - Click the title above to edit it. 
+                  Changes appear instantly in the gallery below.
+                </p>
+              </div>
+
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <p className="text-sm text-green-800">
                   <strong>✅ Modal Pattern Active</strong> - This photo is displayed as a modal 
@@ -167,19 +241,4 @@ export default function PhotoPage({ params }: PhotoPageProps) {
       </div>
     </dialog>
   );
-}
-
-function getPhotoData(id: string) {
-  const photos: Record<string, { id: string; title: string; color: string }> = {
-    "1": { id: "1", title: "Mountain Sunrise", color: "from-orange-400 to-pink-500" },
-    "2": { id: "2", title: "Ocean Waves", color: "from-blue-400 to-cyan-500" },
-    "3": { id: "3", title: "Forest Path", color: "from-green-400 to-emerald-600" },
-    "4": { id: "4", title: "Desert Dunes", color: "from-yellow-400 to-orange-500" },
-    "5": { id: "5", title: "City Lights", color: "from-purple-400 to-indigo-600" },
-    "6": { id: "6", title: "Northern Lights", color: "from-teal-400 to-green-500" },
-    "7": { id: "7", title: "Autumn Colors", color: "from-red-400 to-yellow-500" },
-    "8": { id: "8", title: "Snowy Peaks", color: "from-slate-300 to-blue-400" },
-  };
-
-  return photos[id] || photos["1"];
 }

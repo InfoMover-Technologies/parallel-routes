@@ -1,29 +1,27 @@
+"use client";
+
 import Link from "next/link";
+import { usePhotos } from "@/app/providers/PhotoProvider";
 
 /**
  * Gallery Main Page
  * 
  * Displays a grid of photos. When clicked via Link, photos open in a modal
  * through the intercepted route. Direct navigation opens the full page.
+ * 
+ * Features:
+ * - Real-time updates when photo titles are edited in the modal
+ * - Uses Context to share state with modal
  */
 export default function GalleryPage() {
-  const photos = [
-    { id: "1", title: "Mountain Sunrise", color: "from-orange-400 to-pink-500" },
-    { id: "2", title: "Ocean Waves", color: "from-blue-400 to-cyan-500" },
-    { id: "3", title: "Forest Path", color: "from-green-400 to-emerald-600" },
-    { id: "4", title: "Desert Dunes", color: "from-yellow-400 to-orange-500" },
-    { id: "5", title: "City Lights", color: "from-purple-400 to-indigo-600" },
-    { id: "6", title: "Northern Lights", color: "from-teal-400 to-green-500" },
-    { id: "7", title: "Autumn Colors", color: "from-red-400 to-yellow-500" },
-    { id: "8", title: "Snowy Peaks", color: "from-slate-300 to-blue-400" },
-  ];
+  const { photos } = usePhotos();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
       <div className="max-w-7xl mx-auto">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Photo Gallery - Modal with Intercepting Routes
+            - Photo Gallery - Modal with Intercepting Routes
           </h1>
           <p className="text-gray-600 mb-4">
             Click any photo to open it in a modal. The modal uses intercepting routes

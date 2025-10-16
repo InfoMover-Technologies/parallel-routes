@@ -23,7 +23,7 @@ export default function GallerySlot() {
       <div className="max-w-7xl mx-auto">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Photo Gallery - Modal with Intercepting Routes
+            * Photo Gallery - Modal with Intercepting Routes
           </h1>
           <p className="text-gray-600 mb-4">
             Click any photo to open it in a modal. The modal uses intercepting routes
