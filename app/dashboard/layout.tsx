@@ -4,6 +4,9 @@ interface DashboardLayoutProps {
   children: ReactNode;
   team: ReactNode;
   analytics: ReactNode;
+  projects: ReactNode;
+
+
 }
 
 /**
@@ -18,8 +21,10 @@ interface DashboardLayoutProps {
  */
 export default function DashboardLayout({
   children,
+  projects,
   team,
   analytics,
+
 }: DashboardLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -38,11 +43,16 @@ export default function DashboardLayout({
           {children}
         </div>
 
+        <div className="mb-6">
+          {projects}
+        </div>
+
+
         {/* Parallel slots rendered side by side */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* @team slot */}
           <div>{team}</div>
-          
+
           {/* @analytics slot */}
           <div>{analytics}</div>
         </div>
