@@ -19,8 +19,8 @@ export default function AnalyticsLayout({ children }: AnalyticsLayoutProps) {
   const pathname = usePathname();
 
   const tabs = [
-    { name: "Page Views", href: "/dashboard/page-views" },
-    { name: "Visitors", href: "/dashboard/visitors" },
+    { name: "Page Views", href: "/app/dashboard/page-views" },
+    { name: "Visitors", href: "/app/dashboard/visitors" },
   ];
 
   return (

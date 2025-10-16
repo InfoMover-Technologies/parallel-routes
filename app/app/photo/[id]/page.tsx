@@ -54,7 +54,7 @@ export default function PhotoPage({ params }: PhotoPageProps) {
         if (isEditing) {
           setIsEditing(false);
         } else {
-          router.push("/gallery");
+          router.push("/app/gallery");
         }
       }
     };
@@ -76,7 +76,7 @@ export default function PhotoPage({ params }: PhotoPageProps) {
   }, [isEditing]);
 
   const handleClose = () => {
-    router.push("/gallery");
+    router.push("/app/gallery");
   };
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {

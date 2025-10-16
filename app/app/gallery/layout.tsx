@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { PhotoProvider } from "../providers/PhotoProvider";
 
 interface GalleryLayoutProps {
   children: ReactNode;
@@ -10,8 +9,8 @@ interface GalleryLayoutProps {
  * 
  * Simple layout for the gallery page. Photos open at /photo/[id]
  * which always renders as a modal over the gallery using parallel routes.
- * PhotoProvider is scoped to gallery/photo demos only.
+ * PhotoProvider is now in the parent app layout.
  */
 export default function GalleryLayout({ children }: GalleryLayoutProps) {
-  return <PhotoProvider>{children}</PhotoProvider>;
+  return children;
 }

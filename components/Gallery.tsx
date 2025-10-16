@@ -46,7 +46,7 @@ export default function Gallery() {
           {photos.map((photo) => (
             <Link
               key={photo.id}
-              href={`/photo/${photo.id}`}
+              href={`/app/photo/${photo.id}`}
               className="group relative aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${photo.color}`} />

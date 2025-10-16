@@ -296,10 +296,10 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={isActive("/dashboard")}
+                  isActive={isActive("/app/dashboard")}
                   tooltip="Dashboard with Parallel Slots"
                 >
-                  <Link href="/dashboard">
+                  <Link href="/app/dashboard">
                     <FlaskConical className="h-4 w-4" />
                     <span>Dashboard Demo</span>
                   </Link>
@@ -308,10 +308,10 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={isActive("/admin")}
+                  isActive={isActive("/app/admin")}
                   tooltip="Admin Area - Conditional Rendering"
                 >
-                  <Link href="/admin">
+                  <Link href="/app/admin">
                     <ShieldCheck className="h-4 w-4" />
                     <span>Admin Demo</span>
                   </Link>
@@ -320,10 +320,10 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={isActive("/gallery")}
+                  isActive={isActive("/app/gallery")}
                   tooltip="Photo Gallery - Modal with Intercepting Routes"
                 >
-                  <Link href="/gallery">
+                  <Link href="/app/gallery">
                     <GalleryVerticalEnd className="h-4 w-4" />
                     <span>Photo Gallery Demo</span>
                   </Link>
